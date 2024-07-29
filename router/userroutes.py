@@ -20,3 +20,9 @@ def create_user(user: schemas.UserCreate):
     
     return users
 
+@router.get("/get_user/{user_id}",status_code=status.HTTP_200_OK)
+def get_user(user_id:str):
+    if user_id is None:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+    users = op.get_user(user_id)
+    return users
