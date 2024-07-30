@@ -2,6 +2,7 @@
     "cSpell.words": [
         "autoflush",
         "sessionmaker",
-        "sqlalchemy"
+        "sqlalchemy",
+        "webhookroute"
     ]
 }

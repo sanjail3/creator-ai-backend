@@ -15,6 +15,8 @@ class UserCreate(BaseModel):
     created_at:datetime = datetime.now()
     updated_at:datetime = datetime.now()
     plan : planEnum = planEnum.FREE
+    clerk_id:str
+    primary_email_address_id:str
 
     class config:
         allow_population_by_field_name = True
@@ -26,7 +28,7 @@ class User(UserCreate):
 
 class Generation(BaseModel):
     user_id : uuid.UUID
-    cost : int
+    cost : int = 0
     created_at:datetime = datetime.now()
     updated_at:datetime = datetime.now()
 class ScriptsCreate(BaseModel):
@@ -34,6 +36,15 @@ class ScriptsCreate(BaseModel):
     created_at:datetime = datetime.now()
     updated_at:datetime = datetime.now()
     generation_id:uuid.UUID
+    class Config:
+        orm_mode = True
+        allow_population_by_field_name = True
+
+class VideoGeneration(BaseModel):
+    generation_id:uuid.UUID
+    video_url:str 
+    created_at:datetime = datetime.now()
+    updated_at:datetime = datetime.now()
     class Config:
         orm_mode = True
         allow_population_by_field_name = True

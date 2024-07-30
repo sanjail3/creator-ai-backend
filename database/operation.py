@@ -6,7 +6,7 @@ from database.connection import client
 import json 
 
 def create_user(user: UserCreate):
-    new_user = client["user"].insert_one({"username": user.username, "email": user.email, "created_at": user.created_at, "updated_at": user.updated_at, "plan": user.plan.value})
+    new_user = client["user"].insert_one({"username": user.username, "email": user.email, "created_at": user.created_at, "updated_at": user.updated_at, "plan": user.plan.value, "clerk_id": user.clerk_id, "primary_email_address_id": user.primary_email_address_id})
     inserted_user = client["user"].find_one({"_id": new_user.inserted_id})
     
 
