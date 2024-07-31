@@ -21,27 +21,3 @@ def create_generation(data:Generation):
 def get_user(id:str):
     user = client["user"].find_one({"_id": id})
     return json.loads(json.dumps(user, default=str))
-
-def get_generation(id:str):
-    generation = client["generation"].find_one({"_id": id})
-    return json.loads(json.dumps(generation, default=str))
-
-def get_all_users():
-    users = client["user"].find()
-    return json.loads(json.dumps(users, default=str))
-
-def get_all_generations():
-    generations = client["generation"].find()
-    return json.loads(json.dumps(generations, default=str))
-
-def createScripts(script:ScriptsCreate):
-    new_scripts = client["scripts"].insert_one({"script": script.script, "created_at": script.created_at, "updated_at": script.updated_at, "generation_id": script.generation_id})
-
-    inserted_scripts = client["scripts"].find_one({"_id": new_scripts.inserted_id})
-    return json.loads(json.dumps(inserted_scripts, default=str))
-
-
-def get_scripts(id:str):
-    scripts = client["scripts"].find_one({"_id": id})
-    return json.loads(json.dumps(scripts, default=str))
-

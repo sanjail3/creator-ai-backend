@@ -15,16 +15,28 @@ class UserCreate(BaseModel):
     created_at:datetime = datetime.now()
     updated_at:datetime = datetime.now()
     plan : planEnum = planEnum.FREE
+    credits : int = 10
     clerk_id:str
     primary_email_address_id:str
 
     class config:
-        allow_population_by_field_name = True
+        populate_by_name = True
 
+class socialMedia(Enum):
+    youtube = "youtube"
+    facebook = "facebook"
+    instagram = "instagram"
+    twitter = "twitter"
+
+class socialMediaDetails(BaseModel):
+    platform : socialMedia
+    username : str
+    userid : str
+    
 class User(UserCreate):
     id:uuid.UUID
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
 
 class Generation(BaseModel):
     user_id : uuid.UUID
@@ -38,8 +50,13 @@ class ScriptsCreate(BaseModel):
     generation_id:uuid.UUID
     class Config:
         orm_mode = True
-        allow_population_by_field_name = True
-
+        populate_by_name = True
+class Generationinput(BaseModel):
+    topic:str
+    duration:int
+    tone:str
+    generation_id:uuid.UUID
+    
 class VideoGeneration(BaseModel):
     generation_id:uuid.UUID
     video_url:str 
@@ -47,4 +64,4 @@ class VideoGeneration(BaseModel):
     updated_at:datetime = datetime.now()
     class Config:
         orm_mode = True
-        allow_population_by_field_name = True
+        populate_by_name = True
