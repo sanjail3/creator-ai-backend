@@ -1,12 +1,15 @@
-from langchain.chains import LLMChain
+
 from langchain.prompts import PromptTemplate
-from langchain.llms import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
+default_prompt_template = {
+        "template": "Write a blog post on {topic}. Include an introduction, main content, and conclusion.",
+        "input_variables": ["topic"]
+        }
 class ScriptGenerator:
     def __init__(
         self,
@@ -15,9 +18,9 @@ class ScriptGenerator:
     ):
         self.api_key = api_key
         self.model_name = model_name
-        self.llm = OpenAI(model_name=self.model_name, api_key=self.api_key)
+        self.llm = ChatOpenAI(model_name=self.model_name, api_key=self.api_key)
 
-    def generate(self, prompt_template, **kwargs):
+    def generate(self, prompt_template = default_prompt_template, **kwargs):
         prompt = PromptTemplate(
             template=prompt_template["template"],
             input_variables=prompt_template["input_variables"],
@@ -25,16 +28,12 @@ class ScriptGenerator:
         inputs = {variable: kwargs[variable] for variable in prompt_template["input_variables"]}
 
         print("Generating prediction")
-        print("Prompt: " + prompt.template)
         try:
-            chain = LLMChain(
-                prompt=prompt,
-                llm=self.llm,
-                output_parser=StrOutputParser(),
-            )
+            chain = prompt|self.llm|StrOutputParser()
+            
             response = chain.invoke(inputs)
-            blog_text = response["text"]
-            return blog_text
+        
+            return response
         except Exception as e:
             print(e)
             raise Exception("Error occurred during prediction: " + str(e))
